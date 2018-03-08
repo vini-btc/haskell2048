@@ -13,4 +13,3 @@ main = hspec $ do
             moveRight [0, 4, 2, 0] `shouldBe` [0, 0, 4, 2]
             moveRight [2, 0, 0, 0] `shouldBe` [0, 0, 0, 2]
             moveRight [2, 2, 0, 0] `shouldBe` [0, 0, 2, 2]
-
