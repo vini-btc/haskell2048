@@ -1,23 +1,17 @@
 module TwoThousandAndFortyEight where
 
--- type Grid = []
-type Line = [Int]
-
--- grid = map (\x -> Just x :: Cell) [2, 4, 4, 8]
-grid = [2, 4, 4, 8]
-
 line :: [Int] -> [String]
 line xs = map show xs 
 
+-- Move elements in the row to the right side
+-- We don't consider zero as proper number
+-- TODO: use Maybe / Just
 moveRight :: (Num a, Eq a) => [a] -> [a]
-moveRight (0:0:xs) = (0:0:moveRight xs)
-moveRight (0:x:xs) = 0 : moveRight (x:xs)
-moveRight (x:0:xs) = 0 : moveRight (x:xs)
-moveRight (x:y:[0]) = (0: moveRight (x:[y]))
-moveRight (x:xs) = (x: moveRight xs)
-moveRight xs = xs
-
--- sumRight
+moveRight xs = r
+    where
+        nz = filter (\x -> x /= 0) xs
+        pad = replicate (length xs - length nz) 0
+        r = pad ++ nz
 
 toRight :: (Num a, Eq a) => [a] -> [a] 
 toRight (x:y:xs)
@@ -25,6 +19,3 @@ toRight (x:y:xs)
     | otherwise = (x: toRight (y:xs))
 toRight (x:[]) = [x]
 
-
--- toRight [2,2,2,2] == [0,0,4,4]
--- toRight [2,0,2,0] == [0,0,2,2]
