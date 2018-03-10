@@ -6,7 +6,7 @@ import TwoThousandAndFortyEight
 
 main :: IO()
 main = hspec $ do
-    describe "TwoThousandAndFortyEight.moveRight" $ do
+    describe "TwoThousandAndFortyEight" $ do
         it "moves non-zero number to right" $ do
             moveRight [2, 0, 0, 2] `shouldBe` [0, 0, 2, 2]
             moveRight [0, 2, 2, 0] `shouldBe` [0, 0, 2, 2]
