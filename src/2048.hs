@@ -18,4 +18,5 @@ squashToTheRight (x:y:xs)
     | x == y    = (0 : x + y : squashToTheRight xs)
     | otherwise = (x: squashToTheRight (y:xs))
 squashToTheRight (x:[]) = [x]
+squashToTheRight _ = []
 
