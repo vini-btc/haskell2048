@@ -13,9 +13,9 @@ moveRight xs = r
         pad = replicate (length xs - length nz) 0
         r = pad ++ nz
 
-toRight :: (Num a, Eq a) => [a] -> [a] 
-toRight (x:y:xs)
-    | x == y    = (0 : x + y : toRight xs) 
-    | otherwise = (x: toRight (y:xs))
-toRight (x:[]) = [x]
+squashToTheRight :: (Num a, Eq a) => [a] -> [a]
+squashToTheRight (x:y:xs)
+    | x == y    = (0 : x + y : squashToTheRight xs)
+    | otherwise = (x: squashToTheRight (y:xs))
+squashToTheRight (x:[]) = [x]
 
