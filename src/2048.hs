@@ -1,7 +1,22 @@
 module TwoThousandAndFortyEight where
 
 line :: [Int] -> [String]
-line xs = map show xs 
+line xs = map show xs
+
+main :: IO()
+main = do
+  putStrLn $ concat x
+    where x = map drawLine $ map line drawGrid
+
+drawLine :: [String] -> String
+drawLine (a:b:c:d:xs) = " [ " ++ show a ++ " ] [ " ++ show b ++ " ] [ " ++ show c ++ " ] [ " ++ show d ++ " ]\n"
+
+drawGrid :: (Num t) => [[t]]
+drawGrid = [
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0] ]
 
 -- Move elements in the row to the right side
 -- We don't consider zero as proper number
