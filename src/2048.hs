@@ -1,15 +1,21 @@
 module TwoThousandAndFortyEight where
 
+data DIRECTION = LEFT | RIGHT
+
 line :: [Int] -> [String]
 line xs = map show xs
 
 main :: IO()
 main = do
-  putStrLn $ concat x
-    where x = map drawLine $ map line drawGrid
+  putStrLn $ concat (map drawLine $ map line drawGrid)
+  putStr "Do one movement (h, j, k, l): "
+  name <- getLine
+  putStrLn $ "Your movement was: " ++ name
+
+-- @TODO: after grab the movement, should we clean the scream and draw the new board?
 
 drawLine :: [String] -> String
-drawLine (a:b:c:d:xs) = " [ " ++ show a ++ " ] [ " ++ show b ++ " ] [ " ++ show c ++ " ] [ " ++ show d ++ " ]\n"
+drawLine (a:b:c:d:_) = " [ " ++ show a ++ " ] [ " ++ show b ++ " ] [ " ++ show c ++ " ] [ " ++ show d ++ " ]\n"
 
 drawGrid :: (Num t) => [[t]]
 drawGrid = [
@@ -17,6 +23,8 @@ drawGrid = [
     [0, 0, 0, 0],
     [0, 0, 0, 0],
     [0, 0, 0, 0] ]
+
+-- ask user to do one movement (h,j,k,l)
 
 -- Move elements in the row to the right side
 -- We don't consider zero as proper number
@@ -34,4 +42,3 @@ squashToTheRight (x:y:xs)
     | otherwise = (x: squashToTheRight (y:xs))
 squashToTheRight (x:[]) = [x]
 squashToTheRight _ = []
-
