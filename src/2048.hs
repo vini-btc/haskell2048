@@ -2,15 +2,20 @@ module TwoThousandAndFortyEight where
 
 data DIRECTION = LEFT | RIGHT
 
-line :: [Int] -> [String]
+line :: (Num t, Show t) => [t] -> [String]
 line xs = map show xs
 
 main :: IO()
-main = do
-  putStrLn $ concat (map drawLine $ map line drawGrid)
+main = runProgram drawGrid
+
+runProgram :: (Num t, Show t) => [[t]] -> IO()
+runProgram grid = do
+  putStrLn $ concat (map drawLine $ map line grid)
   putStr "Do one movement (h, j, k, l): "
   name <- getLine
   putStrLn $ "Your movement was: " ++ name
+  runProgram $ map moveAndSquash drawGrid
+
 
 -- @TODO: after grab the movement, should we clean the scream and draw the new board?
 
@@ -20,11 +25,14 @@ drawLine (a:b:c:d:_) = " [ " ++ show a ++ " ] [ " ++ show b ++ " ] [ " ++ show c
 drawGrid :: (Num t) => [[t]]
 drawGrid = [
     [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0] ]
+    [4, 0, 4, 0],
+    [0, 2, 0, 0],
+    [8, 0, 0, 8] ]
 
 -- ask user to do one movement (h,j,k,l)
+
+moveAndSquash :: (Num a, Eq a) => [a] -> [a]
+moveAndSquash = squashToTheRight . moveRight
 
 -- Move elements in the row to the right side
 -- We don't consider zero as proper number
