@@ -1,12 +1,12 @@
 module TwoThousandAndFortyEight where
 
-data DIRECTION = LEFT | RIGHT
+data Direction = Left' | Right'
 
 line :: (Num t, Show t) => [t] -> [String]
 line xs = map show xs
 
-main :: IO()
-main = runProgram drawGrid
+-- main :: IO()
+-- main = runProgram drawGrid
 
 runProgram :: (Num t, Show t) => [[t]] -> IO()
 runProgram grid = do
@@ -34,11 +34,15 @@ drawGrid = [
 moveAndSquash :: (Num a, Eq a) => [a] -> [a]
 moveAndSquash = squashToTheRight . moveRight
 
+move :: (Num a, Eq a) => Direction ->  [a] -> [a]
+move Right' y = moveRight y
+move Left' ys = reverse $ moveRight $ reverse ys
+
 -- Move elements in the row to the right side
 -- We don't consider zero as proper number
 -- TODO: use Maybe / Just
 moveRight :: (Num a, Eq a) => [a] -> [a]
-moveRight xs = r
+moveRight xs = squashToTheRight r
     where
         nz = filter (\x -> x /= 0) xs
         pad = replicate (length xs - length nz) 0
