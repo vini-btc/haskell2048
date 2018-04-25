@@ -1,0 +1,57 @@
+-- This file has been generated from package.yaml by hpack version 0.20.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: d32af49eabbc88a43542dac3c9e17714fc3f694ac9361b35abd47c6b084a23eb
+
+name:           haskell2048
+version:        0.1.0.0
+description:    Please see the README on Github at <https://github.com/malukenho/haskell2048#readme>
+homepage:       https://github.com/malukenho/haskell2048#readme
+bug-reports:    https://github.com/malukenho/haskell2048/issues
+author:         Jefersson Nathan
+maintainer:     malukenho@phpse.net
+copyright:      BSD
+license:        BSD3
+build-type:     Simple
+cabal-version:  >= 1.10
+
+source-repository head
+  type: git
+  location: https://github.com/malukenho/haskell2048
+
+library
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_haskell2048
+  default-language: Haskell2010
+
+executable haskell2048-exe
+  main-is: Main.hs
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , haskell2048
+  other-modules:
+      Paths_haskell2048
+  default-language: Haskell2010
+
+test-suite haskell2048-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base >=4.7 && <5
+    , haskell2048
+  other-modules:
+      Paths_haskell2048
+  default-language: Haskell2010
