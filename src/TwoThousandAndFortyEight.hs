@@ -1,4 +1,7 @@
-module TwoThousandAndFortyEight where
+module TwoThousandAndFortyEight
+    ( runProgram
+    , drawGrid
+    ) where
 
 data Direction = Left' | Right'
 
