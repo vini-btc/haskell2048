@@ -8,9 +8,6 @@ data Direction = Left' | Right'
 line :: (Num t, Show t) => [t] -> [String]
 line xs = map show xs
 
--- main :: IO()
--- main = runProgram drawGrid
-
 runProgram :: (Num t, Show t) => [[t]] -> IO()
 runProgram grid = do
   putStrLn $ concat (map drawLine $ map line grid)
