@@ -1,6 +1,9 @@
 module TwoThousandAndFortyEight
     ( runProgram
     , drawGrid
+    , squashToTheRight
+    , move
+    , Direction(Right', Left')
     ) where
 
 data Direction = Left' | Right'
