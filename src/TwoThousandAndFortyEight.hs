@@ -3,10 +3,11 @@ module TwoThousandAndFortyEight
     , drawGrid
     , squashToTheRight
     , move
-    , Direction(Right', Left')
+    , Direction(Right', Left', Up')
     ) where
 
-data Direction = Left' | Right'
+-- Should we have a NONE position? *Monad*?
+data Direction = Left' | Right' | Up'
 
 line :: (Num t, Show t) => [t] -> [String]
 line xs = map show xs
@@ -15,10 +16,14 @@ runProgram :: (Num t, Show t) => [[t]] -> IO()
 runProgram grid = do
   putStrLn $ concat (map drawLine $ map line grid)
   putStr "Do one movement (h, j, k, l): "
-  name <- getLine
-  putStrLn $ "Your movement was: " ++ name
-  runProgram $ map moveAndSquash drawGrid
+  input <- getLine
+  putStrLn $ "\nYour movement was: " ++ input
+  runProgram $ map (moveAndSquash (resolveInput input))drawGrid
 
+resolveInput :: String -> Direction
+resolveInput "h" = Left'
+resolveInput "l" = Right'
+resolveInput _ = Right'
 
 -- @TODO: after grab the movement, should we clean the scream and draw the new board?
 
@@ -34,8 +39,8 @@ drawGrid = [
 
 -- ask user to do one movement (h,j,k,l)
 
-moveAndSquash :: (Num a, Eq a) => [a] -> [a]
-moveAndSquash = squashToTheRight . moveRight
+moveAndSquash :: (Num a, Eq a) => Direction -> [a] -> [a]
+moveAndSquash d = squashToTheRight . (move d)
 
 move :: (Num a, Eq a) => Direction ->  [a] -> [a]
 move Right' y = moveRight y
