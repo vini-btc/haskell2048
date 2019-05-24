@@ -2,8 +2,6 @@ module TwoThousandAndFortyEight
     ( runProgram
     , drawGrid
     , move
-    , getColumns
-    , stail
     , Direction(Right', Left', Up')
     ) where
 
@@ -27,7 +25,8 @@ runProgram grid = do
 resolveInput :: String -> Direction
 resolveInput "h" = Left'
 resolveInput "l" = Right'
-resolveInput _ = Right'
+resolveInput "k" = Up'
+resolveInput  _  = Right'
 
 -- @TODO: after grab the movement, should we clean the scream and draw the new board?
 
@@ -65,42 +64,9 @@ getRows (v:x:y:z:xs) = [v, x, y, z]:[] ++ getRows xs
 move :: (Num a, Eq a) => Direction -> [a] -> [a]
 move Right' xs = concat $ map mergeRow $ getRows xs
 move Left' xs = reverse $ move Right' $ reverse xs
--- move Up' xs = rotateRight $ concat $ map mergeRow $ getRows $ rotateLeft xs
-move Up' xs = concat $ getColumns $ getRows xs
+move Up' xs = concat $ getColumns $ map reverse $ getRows $ move Right' (concat $ getColumns $ getRows xs)
 
-rotateLeft :: [a] -> [a]
-rotateLeft xs =
-    let
-        arrayWithPositions = zip [0..] xs
-        getElements xs = map (\el -> snd el) xs
-     in
-     getElements $ translate (-3) arrayWithPositions
-
-rotateRight :: [a] -> [a]
-rotateRight xs =
-    let 
-        arrayWithPositions = zip [0..] xs
-        getElements xs = map (\el -> snd el) xs
-     in
-     getElements $ translate 3 arrayWithPositions
-
-translate :: Int -> [(Int, a)] -> [(Int, a)]
-translate translation xs =
-    let
-        arraySize = length xs
-        newPosition pos =
-            if pos + translation <= (arraySize - 1) then
-                pos + translation
-            else if pos + translation < 0 then
-                arraySize + pos + translation
-            else
-                pos + translation - arraySize
-    in
-    sortBy (compare `on` fst) $ map (\(pos, x) -> (newPosition pos, x)) xs
-
-   
-   
-   -- TODO: use Maybe / Just
+-- TODO: use Maybe / Just
 mergeRow :: (Num a, Eq a) => [a] -> [a]
 mergeRow xs = padLeft originalSize $ squashToTheRight r
     where
