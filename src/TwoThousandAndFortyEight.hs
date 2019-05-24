@@ -1,7 +1,6 @@
 module TwoThousandAndFortyEight
     ( runProgram
     , drawGrid
-    , squashToTheRight
     , move
     , Direction(Right', Left', Up')
     ) where
@@ -18,7 +17,7 @@ runProgram grid = do
   putStr "Do one movement (h, j, k, l): "
   input <- getLine
   putStrLn $ "\nYour movement was: " ++ input
-  runProgram $ map (moveAndSquash (resolveInput input))drawGrid
+  -- runProgram $ map (moveAndSquash (resolveInput input))drawGrid
 
 resolveInput :: String -> Direction
 resolveInput "h" = Left'
@@ -39,26 +38,40 @@ drawGrid = [
 
 -- ask user to do one movement (h,j,k,l)
 
-moveAndSquash :: (Num a, Eq a) => Direction -> [a] -> [a]
-moveAndSquash d = squashToTheRight . (move d)
+-- moveAndSquash :: (Num a, Eq a) => Direction -> [a] -> [a]
+-- moveAndSquash d = squashToTheRight . (move d)
 
-move :: (Num a, Eq a) => Direction ->  [a] -> [a]
-move Right' y = moveRight y
-move Left' ys = reverse $ moveRight $ reverse ys
+-- getColumns
+
+getRows :: (Num a, Eq a) => [a] -> [[a]]
+getRows [] = []
+getRows (v:x:y:z:xs) = [v, x, y, z]:[] ++ getRows xs
+
+move :: (Num a, Eq a) => Direction -> [a] -> [a]
+move Right' xs = concat $ map mergeRow $ getRows xs
+move Left' xs = reverse $ move Right' $ reverse xs
 
 -- Move elements in the row to the right side
 -- We don't consider zero as proper number
 -- TODO: use Maybe / Just
-moveRight :: (Num a, Eq a) => [a] -> [a]
-moveRight xs = squashToTheRight r
+mergeRow :: (Num a, Eq a) => [a] -> [a]
+mergeRow xs = padLeft originalSize $ squashToTheRight r
     where
+        originalSize = length xs
         nz = filter (\x -> x /= 0) xs
-        pad = replicate (length xs - length nz) 0
-        r = pad ++ nz
+        r = padLeft originalSize nz
+
+padLeft :: (Num a, Eq a) => Int -> [a] -> [a]
+padLeft n xs =
+    let
+        numberOfZeros = n - (length xs)
+    in
+    (replicate numberOfZeros 0) ++ xs
+
 
 squashToTheRight :: (Num a, Eq a) => [a] -> [a]
 squashToTheRight (x:y:xs)
-    | x == y    = (0 : x + y : squashToTheRight xs)
+    | x == y    = (x + y :  squashToTheRight xs)
     | otherwise = (x: squashToTheRight (y:xs))
 squashToTheRight (x:[]) = [x]
 squashToTheRight _ = []
