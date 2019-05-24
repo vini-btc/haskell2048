@@ -49,16 +49,14 @@ shead [] = []
 shead (x:xs) = x:[]
 
 stail :: (Num a) =>  [a] -> [a]
-stail [] = []
-stail (x:xs) = concat x:xs
+stail = drop 1
 
 getColumns :: (Num a) => [[a]] -> [[a]]
-getColumns [] = []
-getColumns xs = (concat $ map shead xs):[] ++ (getColumns $ map stail xs)
-
--- getColumns :: (Num a) => [[a]] -> [[a]]
--- getColumns [ rows ] = []
--- getColumns [(x:xs)] = []
+getColumns xs = if isValid
+                   then (concat $ map shead xs):[] ++ (getColumns $ map stail xs)
+                   else []
+    where
+        isValid = null (filter null xs)
 
 getRows :: (Num a) => [a] -> [[a]]
 getRows [] = []
