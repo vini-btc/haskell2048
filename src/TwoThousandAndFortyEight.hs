@@ -2,8 +2,13 @@ module TwoThousandAndFortyEight
     ( runProgram
     , drawGrid
     , move
+    , getColumns
+    , stail
     , Direction(Right', Left', Up')
     ) where
+
+import Data.List
+import Data.Function
 
 -- Should we have a NONE position? *Monad*?
 data Direction = Left' | Right' | Up'
@@ -37,11 +42,23 @@ drawGrid = [
     8, 0, 0, 8 ]
 
 -- ask user to do one movement (h,j,k,l)
-
--- moveAndSquash :: (Num a, Eq a) => Direction -> [a] -> [a]
--- moveAndSquash d = squashToTheRight . (move d)
-
 -- getColumns
+
+shead :: (Num a) =>  [a] -> [a]
+shead [] = []
+shead (x:xs) = x:[]
+
+stail :: (Num a) =>  [a] -> [a]
+stail [] = []
+stail (x:xs) = concat x:xs
+
+getColumns :: (Num a) => [[a]] -> [[a]]
+getColumns [] = []
+getColumns xs = (concat $ map shead xs):[] ++ (getColumns $ map stail xs)
+
+-- getColumns :: (Num a) => [[a]] -> [[a]]
+-- getColumns [ rows ] = []
+-- getColumns [(x:xs)] = []
 
 getRows :: (Num a) => [a] -> [[a]]
 getRows [] = []
@@ -50,10 +67,42 @@ getRows (v:x:y:z:xs) = [v, x, y, z]:[] ++ getRows xs
 move :: (Num a, Eq a) => Direction -> [a] -> [a]
 move Right' xs = concat $ map mergeRow $ getRows xs
 move Left' xs = reverse $ move Right' $ reverse xs
+-- move Up' xs = rotateRight $ concat $ map mergeRow $ getRows $ rotateLeft xs
+move Up' xs = concat $ getColumns $ getRows xs
 
--- Move elements in the row to the right side
--- We don't consider zero as proper number
--- TODO: use Maybe / Just
+rotateLeft :: [a] -> [a]
+rotateLeft xs =
+    let
+        arrayWithPositions = zip [0..] xs
+        getElements xs = map (\el -> snd el) xs
+     in
+     getElements $ translate (-3) arrayWithPositions
+
+rotateRight :: [a] -> [a]
+rotateRight xs =
+    let 
+        arrayWithPositions = zip [0..] xs
+        getElements xs = map (\el -> snd el) xs
+     in
+     getElements $ translate 3 arrayWithPositions
+
+translate :: Int -> [(Int, a)] -> [(Int, a)]
+translate translation xs =
+    let
+        arraySize = length xs
+        newPosition pos =
+            if pos + translation <= (arraySize - 1) then
+                pos + translation
+            else if pos + translation < 0 then
+                arraySize + pos + translation
+            else
+                pos + translation - arraySize
+    in
+    sortBy (compare `on` fst) $ map (\(pos, x) -> (newPosition pos, x)) xs
+
+   
+   
+   -- TODO: use Maybe / Just
 mergeRow :: (Num a, Eq a) => [a] -> [a]
 mergeRow xs = padLeft originalSize $ squashToTheRight r
     where
