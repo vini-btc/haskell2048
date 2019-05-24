@@ -16,6 +16,7 @@ before_install:
   - export PATH=$HOME/.local/bin:$PATH
   - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
   - stack install cabal-install
+  - stack setup --upgrade-cabal
 
 script:
   - stack --no-terminal --skip-ghc-check test
