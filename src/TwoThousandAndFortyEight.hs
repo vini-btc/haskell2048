@@ -11,13 +11,13 @@ data Direction = Left' | Right' | Up'
 line :: (Num t, Show t) => [t] -> [String]
 line xs = map show xs
 
-runProgram :: (Num t, Show t) => [[t]] -> IO()
+runProgram :: (Num t, Show t) => [t] -> IO()
 runProgram grid = do
-  putStrLn $ concat (map drawLine $ map line grid)
+  putStrLn $ concat (map drawLine $ map line $ getRows grid)
   putStr "Do one movement (h, j, k, l): "
   input <- getLine
   putStrLn $ "\nYour movement was: " ++ input
-  -- runProgram $ map (moveAndSquash (resolveInput input))drawGrid
+  runProgram $ move (resolveInput input) drawGrid
 
 resolveInput :: String -> Direction
 resolveInput "h" = Left'
@@ -29,12 +29,12 @@ resolveInput _ = Right'
 drawLine :: [String] -> String
 drawLine (a:b:c:d:_) = " [ " ++ show a ++ " ] [ " ++ show b ++ " ] [ " ++ show c ++ " ] [ " ++ show d ++ " ]\n"
 
-drawGrid :: (Num t) => [[t]]
+drawGrid :: (Num t) => [t]
 drawGrid = [
-    [0, 0, 0, 0],
-    [4, 0, 4, 0],
-    [0, 2, 0, 0],
-    [8, 0, 0, 8] ]
+    0, 0, 0, 0,
+    4, 0, 4, 0,
+    0, 2, 0, 0,
+    8, 0, 0, 8 ]
 
 -- ask user to do one movement (h,j,k,l)
 
@@ -43,7 +43,7 @@ drawGrid = [
 
 -- getColumns
 
-getRows :: (Num a, Eq a) => [a] -> [[a]]
+getRows :: (Num a) => [a] -> [[a]]
 getRows [] = []
 getRows (v:x:y:z:xs) = [v, x, y, z]:[] ++ getRows xs
 
