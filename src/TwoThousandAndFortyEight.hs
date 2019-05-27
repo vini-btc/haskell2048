@@ -41,21 +41,13 @@ drawGrid = [
     8, 0, 0, 8 ]
 
 -- ask user to do one movement (h,j,k,l)
--- getColumns
-
-shead :: (Num a) =>  [a] -> [a]
-shead [] = []
-shead (x:xs) = x:[]
-
-stail :: (Num a) =>  [a] -> [a]
-stail = drop 1
 
 getColumns :: (Num a) => [[a]] -> [[a]]
-getColumns xs = if isValid
-                   then (concat $ map shead xs):[] ++ (getColumns $ map stail xs)
-                   else []
-    where
-        isValid = null (filter null xs)
+getColumns [] = []
+getColumns xs = filterNotEmpty $ [map head xs'] ++ getColumns (map tail xs')
+  where
+    xs' = filterNotEmpty xs
+    filterNotEmpty = filter (not . null)
 
 getRows :: (Num a) => [a] -> [[a]]
 getRows [] = []
