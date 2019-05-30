@@ -9,7 +9,7 @@ import Data.List
 import Data.Function
 
 -- Should we have a NONE position? *Monad*?
-data Direction = Left' | Right' | Up'
+data Direction = Left' | Right' | Up' | Down'
 
 line :: (Num t, Show t) => [t] -> [String]
 line xs = map show xs
