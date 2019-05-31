@@ -2,7 +2,7 @@ module TwoThousandAndFortyEight
     ( runProgram
     , drawGrid
     , move
-    , Direction(Right', Left', Up')
+    , Direction(Right', Left', Up', Down')
     ) where
 
 import Data.List
@@ -26,7 +26,8 @@ resolveInput :: String -> Direction
 resolveInput "h" = Left'
 resolveInput "l" = Right'
 resolveInput "k" = Up'
-resolveInput  _  = Right'
+resolveInput "j" = Down'
+-- resolveInput  _  = Right'
 
 -- @TODO: after grab the movement, should we clean the scream and draw the new board?
 
