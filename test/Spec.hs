@@ -39,7 +39,7 @@ main = hspec $ do
                                                , 0, 0, 0, 0 ]
 
         it "it can do down movement" $ do
-            move Up' [ 0, 0, 2, 2
+            move Down' [ 0, 0, 2, 2
                      , 2, 2, 2, 0
                      , 0, 2, 4, 0
                      , 0, 0, 0, 0 ] `shouldBe` [ 0, 0, 0, 0
