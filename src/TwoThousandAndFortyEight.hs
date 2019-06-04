@@ -58,6 +58,7 @@ move :: (Num a, Eq a) => Direction -> [a] -> [a]
 move Right' xs = concat $ map mergeRow $ getRows xs
 move Left' xs = reverse $ move Right' $ reverse xs
 move Up' xs = concat $ getColumns $ map reverse $ getRows $ move Right' (concat $ getColumns $ getRows xs)
+move Down' xs = reverse $ move Up' $ reverse xs
 
 -- TODO: use Maybe / Just
 mergeRow :: (Num a, Eq a) => [a] -> [a]
