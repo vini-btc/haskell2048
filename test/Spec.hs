@@ -46,3 +46,12 @@ main = hspec $ do
                                                , 0, 0, 0, 0
                                                , 0, 0, 4, 0
                                                , 2, 4, 4, 2 ]
+
+        it "it can do multiples movement" $ do
+            (move Down' . move Down') [ 0, 0, 2, 2
+                     , 2, 2, 2, 0
+                     , 0, 2, 4, 0
+                     , 0, 0, 0, 0 ] `shouldBe` [ 0, 0, 0, 0
+                                               , 0, 0, 0, 0
+                                               , 0, 0, 0, 0
+                                               , 2, 4, 8, 2 ]
