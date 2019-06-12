@@ -2,14 +2,14 @@ module TwoThousandAndFortyEight
     ( runProgram
     , drawGrid
     , move
-    , Direction(Right', Left', Up')
+    , Direction(Right', Left', Up', Down')
     ) where
 
 import Data.List
 import Data.Function
 
 -- Should we have a NONE position? *Monad*?
-data Direction = Left' | Right' | Up'
+data Direction = Left' | Right' | Up' | Down'
 
 line :: (Num t, Show t) => [t] -> [String]
 line xs = map show xs
@@ -26,7 +26,8 @@ resolveInput :: String -> Direction
 resolveInput "h" = Left'
 resolveInput "l" = Right'
 resolveInput "k" = Up'
-resolveInput  _  = Right'
+resolveInput "j" = Down'
+-- resolveInput  _  = Right'
 
 -- @TODO: after grab the movement, should we clean the scream and draw the new board?
 
@@ -57,6 +58,7 @@ move :: (Num a, Eq a) => Direction -> [a] -> [a]
 move Right' xs = concat $ map mergeRow $ getRows xs
 move Left' xs = reverse $ move Right' $ reverse xs
 move Up' xs = concat $ getColumns $ map reverse $ getRows $ move Right' (concat $ getColumns $ getRows xs)
+move Down' xs = reverse $ move Up' $ reverse xs
 
 -- TODO: use Maybe / Just
 mergeRow :: (Num a, Eq a) => [a] -> [a]
